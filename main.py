@@ -32,9 +32,13 @@ def denied():
 def explode_button(button):
     if button:
         for i in range(10, 0, -1):
-            button.config(width=i, height=i)
+            button.config(width=i, height=i, bg='red')
             root.update()
             root.after(50)
+        for i in range(10):
+            button.config(bg='yellow' if i % 2 == 0 else 'red')
+            root.update()
+            root.after(100)
         button.destroy()
 
 margin = Canvas(root, width=500, bg='#affc8d', height=100, bd=0, highlightthickness=0, relief='ridge')
