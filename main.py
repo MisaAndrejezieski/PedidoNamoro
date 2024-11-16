@@ -39,7 +39,17 @@ def explode_button(button):
             button.config(bg='yellow' if i % 2 == 0 else 'red')
             root.update()
             root.after(100)
-        button.destroy()
+        button.place_forget()
+        create_explosion(button.winfo_x(), button.winfo_y())
+
+def create_explosion(x, y):
+    explosion = Canvas(root, width=100, height=100, bg='gray', bd=0, highlightthickness=0, relief='ridge')
+    explosion.place(x=x, y=y)
+    for i in range(10):
+        explosion.config(bg='darkgray' if i % 2 == 0 else 'black')
+        root.update()
+        root.after(100)
+    explosion.destroy()
 
 margin = Canvas(root, width=500, bg='#affc8d', height=100, bd=0, highlightthickness=0, relief='ridge')
 margin.pack()
