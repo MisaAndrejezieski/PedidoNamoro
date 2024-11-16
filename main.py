@@ -56,7 +56,7 @@ def move_button_1(e):
 
 def accepted():
     messagebox.showinfo(
-        "Meu amor", "Eu te amo meu amor, lanchinho mais tarde?"
+        "Safadinha!!!", 'Delicíasa, safadinha!!!'
     )
 
 def denied():
@@ -67,7 +67,7 @@ def denied():
 
 margin = Canvas(root, width=500, bg='#affc8d', height=100, bd=0, highlightthickness=0, relief='ridge')
 margin.pack()
-text_id = Label(root, bg='#affc8d', text='Quer namorar comigo?', fg='#500d22', font=('Montserrat', 24, 'bold'))
+text_id = Label(root, bg='#affc8d', text='Quer me dar seu tóba?', fg='#500d22', font=('Montserrat', 24, 'bold'))
 text_id.pack()
 button_1 = tk.Button(root, text='Não', bg='#ffb3c1', command=denied, relief=RIDGE, bd=3, font=('Montserrat', 8, 'bold'))
 button_1.pack()
