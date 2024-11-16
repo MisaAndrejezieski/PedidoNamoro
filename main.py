@@ -2,6 +2,11 @@ import tkinter as tk
 from tkinter import *
 import random
 from tkinter import messagebox
+import pygame
+import time
+
+# Inicializar o pygame
+pygame.init()
 
 root = tk.Tk()
 root.title('ACEITAS?')
@@ -31,25 +36,23 @@ def denied():
 
 def explode_button(button):
     if button:
-        for i in range(10, 0, -1):
-            button.config(width=i, height=i, bg='red')
-            root.update()
-            root.after(50)
-        for i in range(10):
-            button.config(bg='yellow' if i % 2 == 0 else 'red')
-            root.update()
-            root.after(100)
-        button.place_forget()
-        create_explosion(button.winfo_x(), button.winfo_y())
+        x, y = button.winfo_x(), button.winfo_y()
+        button.destroy()
+        create_explosion(x, y)
 
 def create_explosion(x, y):
-    explosion = Canvas(root, width=100, height=100, bg='gray', bd=0, highlightthickness=0, relief='ridge')
-    explosion.place(x=x, y=y)
-    for i in range(10):
-        explosion.config(bg='darkgray' if i % 2 == 0 else 'black')
-        root.update()
-        root.after(100)
-    explosion.destroy()
+    # Configurações da explosão
+    screen = pygame.display.set_mode((600, 600))
+    clock = pygame.time.Clock()
+    explosion_image = pygame.image.load('explosion.png')  # Certifique-se de ter uma imagem de explosão
+
+    for i in range(20):
+        screen.fill((175, 200, 141))  # Cor de fundo
+        screen.blit(explosion_image, (x - explosion_image.get_width() // 2, y - explosion_image.get_height() // 2))
+        pygame.display.flip()
+        clock.tick(30)
+
+    pygame.quit()
 
 margin = Canvas(root, width=500, bg='#affc8d', height=100, bd=0, highlightthickness=0, relief='ridge')
 margin.pack()
