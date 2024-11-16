@@ -56,7 +56,7 @@ def move_button_1(e):
 
 def accepted():
     messagebox.showinfo(
-        "Safadinha!!!", 'Delicíasa, safadinha!!!'
+        "Safadinha!!!", 'Minha putinha Safada!!!'
     )
 
 def denied():
