@@ -28,6 +28,12 @@ def denied():
             "Sem graça!!!", "Você clicou no Não. Que pena!"
         )
 
+def destroy_sim_button():
+    global button_2
+    if button_2 is not None:
+        button_2.destroy()
+        button_2 = None
+
 margin = Canvas(root, width=500, bg='#affc8d', height=100, bd=0, highlightthickness=0, relief='ridge')
 margin.pack()
 text_id = Label(root, bg='#affc8d', text='Quer namorar comigo?', fg='#500d22', font=('Montserrat', 24, 'bold'))
@@ -39,5 +45,8 @@ button_2.pack()
 
 # Vincular o evento após colocar o botão no lugar
 root.bind('<Motion>', move_button_1)
+
+# Temporizador para destruir o botão "Sim" após 2 segundos se o botão "Não" não for clicado
+root.after(2000, destroy_sim_button)
 
 root.mainloop()
