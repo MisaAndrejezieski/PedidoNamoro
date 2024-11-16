@@ -46,7 +46,10 @@ def create_explosion(x, y):
     clock = pygame.time.Clock()
     explosion_image = pygame.image.load('explosion.png')  # Certifique-se de ter uma imagem de explosão
 
-    for i in range(20):
+    # Reduzir o tamanho da explosão
+    explosion_image = pygame.transform.scale(explosion_image, (50, 50))
+
+    for i in range(10):
         screen.fill((175, 200, 141))  # Cor de fundo
         screen.blit(explosion_image, (x - explosion_image.get_width() // 2, y - explosion_image.get_height() // 2))
         pygame.display.flip()
