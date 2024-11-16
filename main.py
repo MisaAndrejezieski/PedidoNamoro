@@ -1,89 +1,69 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import *
 import random
+from tkinter import messagebox
 import pygame
+import time
 
-class LoveProposalApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title('ACEITAS?')
-        self.root.geometry('600x600')
-        self.root.configure(background='#affc8d')
+# Inicializar o pygame
+pygame.init()
 
-        self.init_pygame()
-        self.create_widgets()
-        self.bind_events()
+root = tk.Tk()
+root.title('ACEITAS?')
+root.geometry('600x600')
+root.configure(background='#affc8d')
 
-        self.button_no = None
-        self.button_yes = None
+def move_button_1(e):
+    if button_1 is not None and abs(e.x - button_1.winfo_x()) < 50 and abs(e.y - button_1.winfo_y()) < 40:
+        x = random.randint(0, root.winfo_width() - button_1.winfo_width())
+        y = random.randint(0, root.winfo_height() - button_1.winfo_height())
+        button_1.place(x=x, y=y)
 
-    def init_pygame(self):
-        pygame.init()
-        self.screen = pygame.display.set_mode((600, 600))
-        self.clock = pygame.time.Clock()
-        
-        # Tente carregar a imagem da explosão
-        try:
-            self.explosion_image = pygame.image.load('explosion.png')  # Verifique se a imagem está no diretório
-        except pygame.error as e:
-            messagebox.showerror("Erro", f"Não foi possível carregar a imagem: {e}")
-            self.root.quit()
+def accepted():
+    messagebox.showinfo(
+        "Meu amor", "Eu te amo meu amor, lanchinho mais tarde?"
+    )
 
-    def create_widgets(self):
-        margin = tk.Canvas(self.root, width=500, bg='#affc8d', height=100, bd=0, highlightthickness=0, relief='ridge')
-        margin.pack()
+def denied():
+    global button_1, button_2
+    if button_1 is not None:
+        button_1.destroy()
+        button_1 = None
+        messagebox.showinfo(
+            "Sem graça!!!", "Você clicou no Não. Que pena!"
+        )
+        explode_button(button_2)
 
-        label = tk.Label(self.root, bg='#affc8d', text='Quer namorar comigo?', fg='#500d22', font=('Montserrat', 24, 'bold'))
-        label.pack()
+def explode_button(button):
+    if button:
+        x, y = button.winfo_x(), button.winfo_y()
+        button.destroy()
+        create_explosion(x, y)
 
-        self.button_no = tk.Button(self.root, text='Não', bg='#ffb3c1', command=self.denied, relief=tk.RIDGE, bd=3, font=('Montserrat', 8, 'bold'))
-        self.button_no.pack()
+def create_explosion(x, y):
+    # Configurações da explosão
+    screen = pygame.display.set_mode((600, 600))
+    clock = pygame.time.Clock()
+    explosion_image = pygame.image.load('explosion.png')  # Certifique-se de ter uma imagem de explosão
 
-        self.button_yes = tk.Button(self.root, text='Sim', bg='#ffb3c1', command=self.accepted, relief=tk.RIDGE, bd=3, font=('Montserrat', 14, 'bold'))
-        self.button_yes.pack()
+    for i in range(20):
+        screen.fill((175, 200, 141))  # Cor de fundo
+        screen.blit(explosion_image, (x - explosion_image.get_width() // 2, y - explosion_image.get_height() // 2))
+        pygame.display.flip()
+        clock.tick(30)
 
-    def bind_events(self):
-        self.root.bind('<Motion>', self.move_button_no)
+    pygame.quit()
 
-    def move_button_no(self, event):
-        if self.button_no is not None and abs(event.x - self.button_no.winfo_x()) < 50 and abs(event.y - self.button_no.winfo_y()) < 40:
-            x = random.randint(0, self.root.winfo_width() - self.button_no.winfo_width())
-            y = random.randint(0, self.root.winfo_height() - self.button_no.winfo_height())
-            self.button_no.place(x=x, y=y)
+margin = Canvas(root, width=500, bg='#affc8d', height=100, bd=0, highlightthickness=0, relief='ridge')
+margin.pack()
+text_id = Label(root, bg='#affc8d', text='Quer namorar comigo?', fg='#500d22', font=('Montserrat', 24, 'bold'))
+text_id.pack()
+button_1 = tk.Button(root, text='Não', bg='#ffb3c1', command=denied, relief=RIDGE, bd=3, font=('Montserrat', 8, 'bold'))
+button_1.pack()
+button_2 = tk.Button(root, text='Sim', bg='#ffb3c1', relief=RIDGE, bd=3, command=accepted, font=('Montserrat', 14, 'bold'))
+button_2.pack()
 
-    def accepted(self):
-        messagebox.showinfo("Meu amor", "Eu te amo meu amor, lanchinho mais tarde?")
+# Vincular o evento após colocar o botão no lugar
+root.bind('<Motion>', move_button_1)
 
-    def denied(self):
-        if self.button_no is not None:
-            self.button_no.destroy()
-            self.button_no = None
-            messagebox.showinfo("Sem graça!!!", "Você clicou no Não. Que pena!")
-            self.explode_button(self.button_yes)
-
-    def explode_button(self, button):
-        if button:
-            x, y = button.winfo_x(), button.winfo_y()
-            button.destroy()
-            self.create_explosion(x, y)
-
-    def create_explosion(self, x, y):
-        for i in range(20):
-            self.screen.fill((175, 200, 141))  # Cor de fundo
-            self.screen.blit(self.explosion_image, (x - self.explosion_image.get_width() // 2, y - self.explosion_image.get_height() // 2))
-            pygame.display.flip()
-            self.clock.tick(30)
-
-            # Loop de eventos para o Pygame
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    self.root.quit()
-
-        pygame.quit()
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = LoveProposalApp(root)
-    root.mainloop()
-    
+root.mainloop()
